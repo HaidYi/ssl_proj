@@ -1,11 +1,13 @@
 #!/bin/bash
 
-GPU_ID=3
+GPU_ID=$1
+batch_size=$2
 
-CUDA_VISIBLE_DEVICES=3 python train.py \
+CUDA_VISIBLE_DEVICES=${GPU_ID} python ../train.py \
   --dset cifar10 \
   --mu 0.1 \
-  --n_labeled 4000 \
-  --batch_size 64 \
-  --n_epochs 300 \
+  --n_labeled 250 \
+  --batch_size ${batch_size} \
+  --log_dir "../experiment/batch_size_${batch_size}" \
+  --n_epochs 100 \
   --use_cuda
