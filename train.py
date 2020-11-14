@@ -220,6 +220,10 @@ def main():
 
     writer.close()
 
+    y4gen = toch.tensor([1, 1, 1, 2, 2, 2])
+    img_gen = model.generate(y4gen)
+    print(img_gen)
+
 def main_generate(model, y):
     pass
     return

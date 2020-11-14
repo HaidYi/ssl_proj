@@ -140,7 +140,7 @@ class ssvae_fixmatch(nn.Module):
 
     def compute_loss(self, x, y, u, u_w, u_s):
         sup_loss = self.sup_loss(x, y)
-        print("y", y)
+        # print("y", y)
         unsup_loss = self.unsup_loss(u)
         classify_loss = self.fixmatch_loss(x, y, u, u_w, u_s)
 
