@@ -220,7 +220,13 @@ def main():
 
     writer.close()
 
-    y4gen = torch.long([1, 1, 1, 2, 2, 2])
+    # y4gen = torch.tensor([1, 1, 1, 2, 2, 2], dtype = torch.long)
+    y4gen = torch.tensor([
+        [1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 1, 0, 0, 0, 0, 0, 0]])
     img_gen = model.generate_sample(y4gen)
     print(img_gen)
 
