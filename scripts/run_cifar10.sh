@@ -9,5 +9,5 @@ CUDA_VISIBLE_DEVICES=${GPU_ID} python ../train.py \
   --n_labeled 250 \
   --batch_size ${batch_size} \
   --log_dir "../experiment/batch_size_${batch_size}" \
-  --n_epochs 100 \
+  --n_epochs 2 \
   --use_cuda

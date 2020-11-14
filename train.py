@@ -220,6 +220,9 @@ def main():
 
     writer.close()
 
+def main_generate(model, y):
+    pass
+    return
 
 if __name__ == "__main__":
     main()
