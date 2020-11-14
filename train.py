@@ -221,7 +221,7 @@ def main():
     writer.close()
 
     y4gen = torch.tensor([1, 1, 1, 2, 2, 2])
-    img_gen = model.generate(y4gen)
+    img_gen = model.generate_sample(y4gen)
     print(img_gen)
 
 def main_generate(model, y):
