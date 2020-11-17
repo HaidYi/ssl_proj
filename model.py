@@ -151,7 +151,7 @@ class ssvae_fixmatch(nn.Module):
 
     def generate_sample(self, y):
         z = torch.randn(y.size(0), self.z_dim)
-        # z = z.to(self.args.device)
+        z = z.to(self.args.device)
         # print(z.type(), y.type())
         return self.decode(y, z)
 
