@@ -133,14 +133,17 @@ class ssvae_fixmatch(nn.Module):
         pseudo_label = torch.softmax(logits_u_w.detach(), dim=-1)
         max_probs, targets_u_s = torch.max(pseudo_label, dim=-1)
         mask = max_probs.ge(self.args.threshold).float()
-
+        
         Lu = (F.cross_entropy(logits_u_s, targets_u_s, reduction='none') * mask).mean()
-
-        return Lx + Lu
-
+        if self.args.augtype == "strong":
+#             print("Apply strong augmentation.")
+            return Lx + Lu
+        elif self.args.augtype == "weak":
+#             print("Apply weak augmentation.")
+            return Lx
+        
     def compute_loss(self, x, y, u, u_w, u_s):
         sup_loss = self.sup_loss(x, y)
-        # print("y", y)
         unsup_loss = self.unsup_loss(u)
         classify_loss = self.fixmatch_loss(x, y, u, u_w, u_s)
 
@@ -148,8 +151,8 @@ class ssvae_fixmatch(nn.Module):
 
     def generate_sample(self, y):
         z = torch.randn(y.size(0), self.z_dim)
+        z = z.to(self.args.device)
         return self.decode(y, z)
-
 
 def dict2namespace(dict_):
     namespace = argparse.Namespace()

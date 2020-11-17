@@ -18,7 +18,7 @@ def time_str(fmt=None):
 
 def setup_logger(args, log_level=logging.INFO):
     format = "%(asctime)s - %(levelname)s - %(name)s -   %(message)s"
-    logdir = os.path.join(args.log_dir, f'{args.dset}@{args.n_labeled}')
+    logdir = os.path.join(args.log_dir, f'{args.dset}@{args.n_labeled}_{args.augtype}')
     make_dir(logdir)
 
     writer = SummaryWriter(logdir=logdir, comment=f'{args.dset}@{args.n_labeled}')
@@ -102,6 +102,8 @@ def parse_cmd():
     parser.add_argument('--use_cuda', default=True, action='store_true', help='whether to use gpu')
     parser.add_argument('--seed', type=int, default=0, help='random seed')
     parser.add_argument('--device', type=str, default='cuda:0', help='cuda device')
+    parser.add_argument('--augtype', type=str, default='strong', help='include weak or strong augmentation')
+    parser.add_argument('--gen', default=True, help='generate images or not')
 
     args = parser.parse_args()
 
