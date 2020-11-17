@@ -64,7 +64,7 @@ class ssvae_fixmatch(nn.Module):
         '''
         p(x|y, z) = Decoder(y, z)
         '''
-        y_z = torch.cat([y, z], dim=-1)
+        y_z = torch.cat((y, z), dim=-1)
         recons_x = self.decoder(y_z.view(-1, self.z_dim + self.n_class, 1, 1))
         return recons_x
 
@@ -151,7 +151,8 @@ class ssvae_fixmatch(nn.Module):
 
     def generate_sample(self, y):
         z = torch.randn(y.size(0), self.z_dim)
-        z = z.to(self.args.device)
+        # z = z.to(self.args.device)
+        # print(z.type(), y.type())
         return self.decode(y, z)
 
 def dict2namespace(dict_):
