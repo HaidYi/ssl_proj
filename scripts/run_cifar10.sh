@@ -1,12 +1,15 @@
 #!/bin/bash
 
-GPU_ID=$1
-batch_size=$2
-augtype=$3
-n_epochs=$4
+dset=$1
+n_class=$2
+GPU_ID=$3
+batch_size=$4
+augtype=$5
+n_epochs=$6
 
 CUDA_VISIBLE_DEVICES=${GPU_ID} python ../train.py \
-  --dset cifar10 \
+  --dset ${dset} \
+  --n_class ${n_class} \
   --mu 0.1 \
   --n_labeled 4000 \
   --batch_size ${batch_size} \

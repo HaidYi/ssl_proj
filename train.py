@@ -13,6 +13,8 @@ from tqdm import tqdm
 from model import ssvae_fixmatch
 from util import parse_cmd, setup_logger, AverageMeter, make_dir
 from datasets.get_data import get_cifar10, get_cifar100
+import matplotlib as mpl
+mpl.use('Agg')
 
 DATASET_GETTERS = {
     'cifar10': get_cifar10,
@@ -51,9 +53,32 @@ def test(data_loader, model, args):
 
 def generate_img(args, img_num = 10,
                  best_model_dir = "./checkpoint",
-                 labels = ["airplane", "automobile", "bird", "cat", "deer", "dog", "frog", "horse", "ship", "truck"],
                  save_dir = "checkpoint"
                 ):
+    if args.dset == "cifar10":
+        labels = ["airplane", "automobile", "bird", "cat", "deer", "dog", "frog", "horse", "ship", "truck"]
+    elif args.dset == "cifar100":
+        labels = ["beaver", "dolphin", "otter", "seal", "whale", "aquarium fish", "flatfish", "ray", "shark", "trout"]
+        # labels = ["beaver", "dolphin", "otter", "seal", "whale",
+        #           "aquarium fish", "flatfish", "ray", "shark", "trout",
+        #           "orchids", "poppies", "roses", "sunflowers", "tulips",
+        #           "bottles", "bowls", "cans", "cups", "plates",
+        #           "apples", "mushrooms", "oranges", "pears", "sweet peppers",
+        #           "clock", "computer keyboard", "lamp", "telephone", "television",
+        #           "bed", "chair", "couch", "table", "wardrobe",
+        #           "bee", "beetle", "butterfly", "caterpillar", "cockroach",
+        #           "bear", "leopard", "lion", "tiger", "wolf",
+        #           "bridge", "castle", "house", "road", "skyscraper",
+        #           "cloud", "forest", "mountain", "plain", "sea",
+        #           "camel", "cattle", "chimpanzee", "elephant", "kangaroo",
+        #           "fox", "porcupine", "possum", "raccoon", "skunk",
+        #           "crab", "lobster", "snail", "spider", "worm",
+        #           "baby", "boy", "girl", "man", "woman",
+        #           "crocodile", "dinosaur", "lizard", "snake", "turtle",
+        #           "hamster", "mouse", "rabbit", "shrew", "squirrel",
+        #           "maple", "oak", "palm", "pine", "willow",
+        #           "bicycle", "bus", "motorcycle", "pickup truck", "train",
+        #           "lawn-mower", "rocket", "streetcar", "tank", "tractor"]
     best_model_filename = f"{args.dset}-{args.n_labeled}_{args.augtype}_model_best.pth.tar"
     checkpoint_dir_filename = os.path.join(best_model_dir, best_model_filename)
     model = ssvae_fixmatch(args)
@@ -66,8 +91,8 @@ def generate_img(args, img_num = 10,
     for labels_i in range(label_num):
         labels_list = labels_list + [labels_i] * img_num
     target = torch.tensor(labels_list)
-    one_hot = torch.nn.functional.one_hot(target)
-    one_hot = one_hot.to(args.device)
+    one_hot = torch.nn.functional.one_hot(target, args.n_class)
+    one_hot = one_hot.to(args.device).float()
     img_gen = model.generate_sample(one_hot)
     
     fig, axs = plt.subplots(label_num, img_num, sharex=True, sharey=True, figsize=(15,15))
